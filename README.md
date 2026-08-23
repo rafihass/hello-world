@@ -21,7 +21,7 @@ browser and play.
 | **Touch** | Specific, timed physical cards with an on-screen countdown |
 | **Position** | 22 classical Kama Sutra positions — Sanskrit name, plain description, difficulty, practical note, and a link out to a full illustrated guide |
 | **Dare** | Playful challenges and small games inside the game |
-| **Kink** | Power play and fetish cards, off by default, each kind opted into separately |
+| **Kink** | Ten separate decks — power play, restraint, impact and more — off by default, each opted into separately |
 
 **Three intensity levels** — Spark, Simmer, Fire. Whatever ceiling you set, the
 game always opens at Spark and escalates: first third gentle, last third at your
@@ -46,29 +46,56 @@ paddle, collar, clamps, gag, ice, feather, oil, camera. Cards list what they
 need and are never dealt unless you've said you have it, so nothing lands that
 you can't actually do. Cards that need an item show it on the face of the card.
 
-## Kink
+## Kink — ten decks
 
-Off until you switch it on, then each category is opted into separately:
-domination & submission, restraint & bondage, impact play, degradation &
-humiliation, pegging & strap-on, exhibitionism & risk, sensation & temperature,
-orgasm control & denial, roleplay, worship & service.
+Kink is off until you switch it on. Then each kink is a **full deck of its own**,
+not a card or two mixed into the pile — 131 cards in total:
+
+| Deck | Cards |
+|---|---|
+| Domination & submission | 14 |
+| Restraint & bondage | 14 |
+| Impact play / spanking | 13 |
+| Degradation & humiliation | 13 |
+| Pegging & strap-on | 13 |
+| Exhibitionism & risk | 13 |
+| Sensation & temperature | 13 |
+| Orgasm control & denial | 13 |
+| Worship & service | 13 |
+| Roleplay | 12 |
+
+**Every deck has its own arc.** The opening cards negotiate and warm up — agree
+the safe signal, set the word list, outside only, ten slow ones over clothes —
+and the last cards are the deep end. Turn a deck on and you get that whole
+progression, not a random sample of it.
+
+**Tonight's shape.** Select two or more decks and a focus picker appears: mix
+them, or give one deck the entire evening. In focus mode the game deals only
+from that deck, so its arc becomes the shape of the night — a bondage night
+starts by practising the release signal and ends by untying you slowly.
+
+**Deck primers.** The first card drawn from any deck carries that deck's primer:
+the thing you need to know before the deck's first card, in the deck's own
+terms. Rope's says scissors within reach and check the hands. Pegging's says
+more lube than you think and {sub} sets every pace. It appears once per deck per
+game.
 
 You also choose who leads — swap each turn, or one person all night — and kink
 cards address the two of you by role.
 
-Design decisions worth knowing about:
+Other design decisions worth knowing about:
 
 - **Nothing is a surprise.** The panel tells you to switch on only what you have
-  already talked about. Degradation cards start by having the receiving partner
-  name the words that are allowed and the ones that aren't.
+  already talked about. Every deck's first cards are negotiation cards.
 - **Safety is in the card text, not a disclaimer.** Rope cards say two fingers
-  under every wrap and scissors within reach. Gag cards make you agree a hand
-  signal first. Impact cards name the areas to avoid. Clamp cards warn that
-  taking them off is the intense part. Pegging cards start outside-only and
-  build.
-- **Public cards never involve anyone else.** Exhibitionism cards are about the
-  thrill between the two of you — discreet, clothed, nothing a stranger would
-  notice. Nobody becomes an unwilling audience.
+  under every wrap. Gag cards make you agree and test a hand signal first.
+  Impact cards name the areas to avoid and make you warm up. Clamp cards warn
+  that taking them off is the intense part. Degradation cards start with the
+  receiving partner naming the allowed words and the forbidden ones, and the
+  deck contains a card that breaks character entirely.
+- **Public cards never involve anyone else.** Exhibitionism is about the thrill
+  between the two of you — discreet, clothed, nothing a stranger would notice.
+  Nobody becomes an unwilling audience.
 - **Aftercare is guaranteed.** Play any kink card and the game ends with an
   aftercare screen. Don't skip it.
 
@@ -84,7 +111,7 @@ Design decisions worth knowing about:
 ## Sharing a setup
 
 **Copy a link with these settings** puts your whole configuration — names,
-location, toys, card types, kink categories — into the URL and copies it, so
+location, toys, card types, kink decks, focus — into the URL and copies it, so
 your partner can open the same deck on their own phone. The settings live in the
 part of the URL after `#`, which browsers never send to a server. It is still an
 ordinary link, so send it the way you'd send anything else you'd rather not have
@@ -108,14 +135,19 @@ the script.
 
 ## Adding your own cards
 
-Card content lives in the `ASK`, `TOUCH`, `DARE`, `KINK` and `POSE` arrays at the
-top of the `<script>` block:
+Card content lives in the `ASK`, `TOUCH`, `DARE` and `POSE` arrays and the
+`KINK_DECKS` list at the top of the `<script>` block. A new kink deck is an
+entry in `KINK_DECKS` with an `id`, a name, a `primer` and its cards — the
+setup screen, the focus picker and the counts all pick it up automatically.
+
+Card fields:
 
 - `l` — heat level, 1–3
 - `p` — privacy needed, 1–3 (public / half-private / private)
 - `s` — optional countdown, in seconds
 - `toys` — array of required item ids, e.g. `["cuffs","blindfold"]`
-- `f` — kink category id (kink cards only)
+- kink cards live inside their deck's `cards` array in `KINK_DECKS`; the deck
+  stamps its own id onto them, so a new card only needs `l`, `p` and `t`
 - `d` — difficulty 1–4 (positions only)
 - `{you}`, `{them}`, `{dom}`, `{sub}` are replaced with the players' names
 

@@ -161,6 +161,13 @@
     <h2>Which kinds of kink?</h2>
     <p class="sub" style="margin:4px 0 4px">Everything here is off until you both switch it on. Turn on only what you have <em>already talked about</em> — a card is not the place to find out your partner hates something.</p>
     <div class="chips" id="kinkChips"></div>
+
+    <div id="focusWrap" class="hide" style="margin-top:20px">
+      <label>Tonight's shape</label>
+      <p class="sub" style="margin:0 0 10px">Mix the decks you've chosen, or give one deck the whole evening — a single deck deals in its own order, from negotiating it to the deep end.</p>
+      <div class="chips" id="focusChips"></div>
+    </div>
+
     <div class="row" style="margin-top:18px">
       <div><label>Who's leading tonight?</label>
         <div class="opts" id="domOpts" style="margin-top:2px">
@@ -283,20 +290,6 @@ var TOYS = [
   {id:"oil",       n:"Massage oil"}, {id:"camera", n:"Camera / phone"}
 ];
 
-/* Kink categories — all off by default, each opted into separately. */
-var KINKS = [
-  {id:"dom",     n:"Domination & submission"},
-  {id:"bond",    n:"Restraint & bondage"},
-  {id:"impact",  n:"Impact play / spanking"},
-  {id:"humil",   n:"Degradation & humiliation"},
-  {id:"peg",     n:"Pegging & strap-on"},
-  {id:"exhib",   n:"Exhibitionism & risk"},
-  {id:"sens",    n:"Sensation & temperature"},
-  {id:"edge",    n:"Orgasm control & denial"},
-  {id:"role",    n:"Roleplay"},
-  {id:"worship", n:"Worship & service"}
-];
-
 /* =================================================================
    CARDS
    l = heat level 1..3      p = privacy needed 1..3
@@ -365,65 +358,205 @@ var DARE = [
   {l:3,p:2,t:"Hand your phone to {them}. They set a timer between one and five minutes. Whatever's happening when it rings, stops."}
 ];
 
-/* ---- KINK ---- every card is gated on its category being switched on ---- */
-var KINK = [
-  /* domination & submission */
-  {f:"dom",l:2,p:2,t:"{dom} gives three rules for the next ten minutes. {sub} repeats them back before they start."},
-  {f:"dom",l:2,p:3,s:60,t:"{sub} kneels and waits. {dom} does nothing at all for a full minute, then decides."},
-  {f:"dom",l:3,p:3,t:"{sub} asks permission out loud before touching {dom} anywhere for the rest of the game. Every time."},
-  {f:"dom",l:3,p:3,toys:["collar"],t:"{dom} puts the collar on {sub}. Whatever it means to you two, it means that until it comes off."},
-  {f:"dom",l:3,p:3,t:"{dom} chooses the next three cards from the deck for {sub}. {sub} doesn't get to see them first."},
-  /* restraint */
-  {f:"bond",l:2,p:3,toys:["cuffs"],s:120,t:"{sub}'s hands are cuffed in front of them. {dom} spends two minutes doing whatever they like — no hands allowed back."},
-  {f:"bond",l:3,p:3,toys:["rope"],t:"{dom} ties {sub}'s wrists. Check two fingers fit under every wrap, and keep scissors within reach before you start."},
-  {f:"bond",l:2,p:3,t:"No toys needed: {sub} holds the headboard, a chair back, or their own wrists. If they let go, {dom} stops."},
-  {f:"bond",l:3,p:3,toys:["cuffs","blindfold"],s:180,t:"Cuffed and blindfolded. {dom} narrates what they're about to do, ten seconds before doing it."},
-  {f:"bond",l:3,p:3,toys:["gag"],t:"The gag goes on only after you agree a hand signal that means stop. Two taps on {dom}'s arm — practise it once, then begin."},
-  /* impact */
-  {f:"impact",l:2,p:3,t:"{dom} spanks {sub} with an open hand, starting far softer than you think. {sub} counts out loud. Stop at ten, or sooner."},
-  {f:"impact",l:2,p:3,t:"{sub} names a number between three and twelve. {dom} delivers exactly that many, slowly, and {sub} thanks them for each."},
-  {f:"impact",l:3,p:3,toys:["paddle"],t:"Paddle. Fleshy parts only — never the spine, kidneys or tailbone. Build up over a full minute; check in halfway."},
-  {f:"impact",l:3,p:3,t:"{dom} alternates: one hard, three soft, somewhere unexpected. {sub} says 'yellow' the moment it stops being good."},
-  /* degradation */
-  {f:"humil",l:2,p:3,t:"Before this card: {sub} names three words they want said to them, and any word that's off limits. {dom} uses only those, for two minutes."},
-  {f:"humil",l:3,p:3,t:"{dom} tells {sub}, in the agreed language, exactly what they're for tonight. {sub} has to agree out loud."},
-  {f:"humil",l:3,p:3,t:"{sub} has to ask out loud for what they want, in the crudest words they're comfortable with. {dom} makes them ask twice."},
-  {f:"humil",l:3,p:3,t:"{dom} praises and insults in the same breath, using only the agreed words. When it lands, {sub} says so."},
-  /* pegging & strap-on */
-  {f:"peg",l:2,p:3,toys:["lube"],t:"Nothing goes in yet. {dom} uses lube and one finger, outside only, until {sub} asks for more. Take five minutes over it."},
-  {f:"peg",l:3,p:3,toys:["strapon","lube"],t:"{dom} wears the strap-on. {sub} sets the pace by pushing back — {dom} stays completely still until told otherwise."},
-  {f:"peg",l:3,p:3,toys:["strapon","lube"],t:"Face to face, {sub} on their back, knees up, {dom} kneeling. More lube than you think, and go in slowly enough to be boring."},
-  {f:"peg",l:3,p:3,toys:["plug","lube"],t:"The plug goes in and stays in for the next three cards, whatever else happens. {sub} can end that at any point."},
-  {f:"peg",l:2,p:3,toys:["strapon"],t:"{dom} wears it under their clothes for the next two cards. Nobody mentions it."},
-  /* exhibitionism & risk — discreet by design; nobody else is ever involved */
-  {f:"exhib",l:2,p:1,t:"{sub} takes off one thing they're wearing, discreetly, and hands it to {dom} under the table. Nobody around you notices anything."},
-  {f:"exhib",l:2,p:1,t:"{dom} says one filthy sentence into {sub}'s ear in the middle of ordinary conversation. {sub} has to keep the conversation going."},
-  {f:"exhib",l:2,p:2,s:120,t:"Somewhere you could be seen but won't be: kiss like you're not in public. Two minutes, fully clothed."},
-  {f:"exhib",l:3,p:2,toys:["vibe"],t:"{dom} holds the remote for the rest of the round. {sub} carries on as if nothing is happening."},
-  {f:"exhib",l:3,p:2,t:"Back seat, curtains open onto a dark garden, a balcony at night — somewhere with a real thrill and no actual audience. Ten minutes."},
-  {f:"exhib",l:3,p:3,toys:["camera"],t:"Film thirty seconds of tonight. Watch it together, then decide together whether it survives the night."},
-  /* sensation */
-  {f:"sens",l:2,p:3,toys:["ice"],s:90,t:"Ice in {dom}'s mouth, then mouth on {sub}. Alternate cold and warm until the ice is gone."},
-  {f:"sens",l:2,p:3,toys:["feather"],s:120,t:"Feather only. {sub} isn't allowed to move — every time they do, {dom} starts the two minutes again."},
-  {f:"sens",l:2,p:3,toys:["blindfold"],s:120,t:"Blindfolded, {sub} guesses what's touching them: silk, nails, teeth, warm metal, breath. Ten seconds each."},
-  {f:"sens",l:3,p:3,toys:["clamps"],t:"Clamps go on gently and come off within ten minutes — taking them off is the intense part, so {dom} does it slowly, with a hand ready."},
-  {f:"sens",l:3,p:3,t:"{dom} uses nails down {sub}'s back and thighs, hard enough to mark for an hour but not to break skin."},
-  /* orgasm control */
-  {f:"edge",l:2,p:3,t:"{sub} isn't allowed to finish until three more cards have been played. {dom} decides how close they get in the meantime."},
-  {f:"edge",l:3,p:3,t:"Three times to the edge, three times stopped. {sub} counts them out loud. What happens after the third is {dom}'s call."},
-  {f:"edge",l:3,p:3,toys:["wand"],t:"{dom} controls the wand and the speed. {sub} has to ask — politely — for every change."},
-  {f:"edge",l:3,p:3,t:"{sub} has to ask permission to finish, and {dom} has to say no at least once."},
-  /* roleplay */
-  {f:"role",l:2,p:1,t:"For the next two cards you've never met. {dom} opens with a line. Neither of you may break character or laugh."},
-  {f:"role",l:2,p:2,t:"One of you is here to be interviewed for something. The other is decidedly unprofessional about it."},
-  {f:"role",l:3,p:3,t:"Reenact the first time you slept together — same order, same lines, slower."},
-  {f:"role",l:3,p:3,t:"{sub} plays someone who has been very patient and is done being patient. {dom} finds out what that means."},
-  /* worship & service */
-  {f:"worship",l:2,p:3,s:120,t:"{sub} worships one part of {dom}'s body — feet, hands, mouth, whatever {dom} names — for two full minutes, using only their mouth."},
-  {f:"worship",l:2,p:3,t:"{sub} undresses {dom} completely, folds everything, and thanks them for it."},
-  {f:"worship",l:3,p:3,toys:["oil"],s:300,t:"Five minutes of service: {sub} oils and massages {dom} anywhere they're told, and gets nothing back."},
-  {f:"worship",l:3,p:3,t:"{sub} asks {dom} what they can do for them, and does it, without being told twice."}
+/* ---- KINK DECKS ----------------------------------------------------------
+   Each kink is a full deck with its own arc, not a card mixed into the pile.
+   The opening cards of every deck negotiate and warm up; the last cards are
+   the deep end. `primer` is shown once, on the first card drawn from that
+   deck in a game. A deck can also be played on its own for a whole evening
+   (the Focus setting), in which case its arc becomes the shape of the night.
+--------------------------------------------------------------------------- */
+var KINK_DECKS = [
+
+{id:"dom", n:"Domination & submission",
+ primer:"This deck runs on rules. Whatever {dom} takes charge of, {sub} handed over on purpose and can take back with the stop word — that is what makes it play instead of a mood.",
+ cards:[
+  {l:1,p:1,t:"{sub} names one thing they want {dom} to take charge of tonight, and one thing that stays entirely theirs. {dom} repeats both back."},
+  {l:1,p:1,t:"{dom} gives three rules for the next ten minutes. {sub} repeats them back before they start."},
+  {l:1,p:1,t:"{dom} decides what {sub} calls them tonight, and {sub} decides whether they'll answer to it. Use it from now on."},
+  {l:2,p:2,t:"{sub} asks permission out loud before touching {dom} anywhere for the rest of the game. Every time."},
+  {l:2,p:2,t:"{dom} decides where {sub} sits, stands or kneels for the next two cards, and {sub} doesn't move until told."},
+  {l:2,p:3,s:60,t:"{sub} kneels and waits. {dom} does nothing at all for a full minute, then decides."},
+  {l:2,p:3,t:"{dom} undresses {sub} at whatever speed they like. {sub} keeps their hands at their sides throughout."},
+  {l:2,p:3,t:"{sub} asks, in a full sentence, to be touched. {dom} says no the first time and yes the second."},
+  {l:3,p:3,toys:["collar"],t:"{dom} puts the collar on {sub}. Whatever it means to you two, it means that until it comes off — and {dom} is the one who takes it off."},
+  {l:3,p:3,t:"{dom} chooses the next three cards from the deck for {sub}. {sub} doesn't get to see them first."},
+  {l:3,p:3,t:"For the next two cards {sub} may only answer with 'yes' and {dom}'s title. Anything else and the card restarts."},
+  {l:3,p:3,s:120,t:"{dom} sets {sub} a task to hold for two minutes — a position, eye contact, hands somewhere and not moving — and does whatever they like around it."},
+  {l:3,p:3,t:"{sub} thanks {dom} out loud for every single thing done to them until the next card."},
+  {l:3,p:3,t:"{dom} decides how tonight ends, says it out loud now, and {sub} agrees to it in advance."}
+]},
+
+{id:"bond", n:"Restraint & bondage",
+ primer:"Before anything is tied: scissors or shears within arm's reach, a two-tap signal that means release me now, and a check on {sub}'s hands every few minutes. Cold or numb hands end the card immediately — that part is not negotiable.",
+ cards:[
+  {l:1,p:1,t:"Agree the signal. Two taps on {dom}'s arm means untie me now. Practise it once, both directions, before anything else in this deck."},
+  {l:1,p:2,t:"No toys needed: {sub} holds their own wrists above their head. The moment they let go, {dom} stops whatever they're doing."},
+  {l:2,p:3,t:"{sub} holds the headboard, a chair back or the edge of a table. Letting go is allowed — it just ends the card."},
+  {l:2,p:3,toys:["cuffs"],s:120,t:"{sub}'s hands are cuffed in front of them. {dom} has two minutes and {sub} has no hands."},
+  {l:2,p:3,t:"A scarf, a tie or a belt, loosely around {sub}'s wrists. Loose enough to slip out of — the point is that they choose not to."},
+  {l:2,p:3,toys:["blindfold"],s:120,t:"Blindfold only, no restraint. {dom} moves {sub} into whatever position they like and keeps them there."},
+  {l:2,p:3,toys:["rope"],t:"{dom} ties {sub}'s wrists. Two fingers must fit under every wrap, nothing crosses the inside of the wrist, and the scissors stay in sight."},
+  {l:3,p:3,toys:["cuffs","blindfold"],s:180,t:"Cuffed and blindfolded. {dom} says what they're about to do ten seconds before doing it, then does exactly that."},
+  {l:3,p:3,toys:["rope"],t:"Ankles this time, or ankles to wrists. Same rules: two fingers, no joints, scissors in sight."},
+  {l:3,p:3,toys:["cuffs"],t:"Hands cuffed behind. {dom} moves {sub} into a position from tonight's deck and uses them in it."},
+  {l:3,p:3,toys:["gag"],t:"The gag goes on only after the hand signal is agreed and tested, and comes out the second it's given. {dom} checks {sub}'s eyes every minute."},
+  {l:3,p:3,s:60,t:"Tied or held, {sub} is left alone for one minute. {dom} stays in the room and watches the whole time."},
+  {l:3,p:3,t:"Circulation check: {dom} stops, warms {sub}'s hands, asks how they're doing, and then either continues or unties. {sub} answers honestly."},
+  {l:3,p:3,t:"{dom} unties {sub} slowly, kissing each place the rope or cuff was. Nothing else happens until that's finished."}
+]},
+
+{id:"impact", n:"Impact play / spanking",
+ primer:"Fleshy areas only — backside and the back of the thighs. Never the spine, kidneys, tailbone, neck or joints. Start softer than feels worth doing and build; a warmed body takes far more than a cold one.",
+ cards:[
+  {l:1,p:1,t:"{sub} sets the terms: where, how hard is too hard, and a word that stops this specific thing without ending the night."},
+  {l:1,p:2,t:"Warm-up only. Flat hand, over clothes, ten slow ones with a pause between each."},
+  {l:2,p:3,t:"Bare hand, bare skin, counting to ten together. {dom} stops at ten whatever either of you wants."},
+  {l:2,p:3,t:"{sub} names a number between three and twelve. {dom} delivers exactly that many, slowly, and {sub} thanks them for each one."},
+  {l:2,p:3,t:"{dom} alternates: one hard, three soft, somewhere unexpected each time. {sub} says 'yellow' the moment it stops being good."},
+  {l:2,p:3,t:"For the next two cards {dom} may spank {sub} at any moment, mid-anything, with no warning."},
+  {l:3,p:3,t:"{sub} has to hold a position while it happens. If they move out of it, the count starts again."},
+  {l:3,p:3,toys:["paddle"],t:"Paddle. Fleshy parts only, building over a full minute, with a check-in halfway through that {sub} has to answer properly."},
+  {l:3,p:3,t:"{sub} has to ask for each one. {dom} takes their time between them."},
+  {l:3,p:3,s:300,t:"Twenty over five minutes, warming the skin with hands in between, never twice in the same place."},
+  {l:3,p:3,toys:["paddle"],t:"{sub} chooses hand or paddle for the last ten, and has to say out loud why they chose it."},
+  {l:3,p:3,t:"{dom} finds the line — hard enough that {sub} makes a sound they didn't mean to make — and then stays just underneath it."},
+  {l:3,p:3,s:60,t:"Done. {dom} soothes every mark with hands and mouth for a full minute and {sub} says how it felt."}
+]},
+
+{id:"humil", n:"Degradation & humiliation",
+ primer:"This deck only works on words you have both chosen in advance. Nothing here is improvised, nothing touches what your partner is actually insecure about, and it stops the instant it stops being fun. If in doubt, {dom} drops character and asks.",
+ cards:[
+  {l:1,p:1,t:"The word list. {sub} names three words they want said to them, and every word that is off limits. {dom} repeats both lists back before anything starts."},
+  {l:1,p:1,t:"{dom} says one of the agreed words to {sub}, once, then stops and asks how it landed. Adjust the list."},
+  {l:2,p:2,s:120,t:"Two minutes of the agreed language, and nothing outside it. {sub} can end it with the stop word at any point."},
+  {l:2,p:3,t:"{sub} asks for what they want in the crudest words they're comfortable with. {dom} makes them ask twice."},
+  {l:2,p:3,t:"{dom} praises and degrades in the same breath, using only the agreed words. When one lands, {sub} says so out loud."},
+  {l:2,p:3,t:"{dom} tells {sub} exactly what they're for tonight. {sub} has to agree out loud, in their own words."},
+  {l:3,p:3,t:"{dom} narrates everything they're doing in the agreed language, as they do it, without stopping."},
+  {l:3,p:3,t:"{sub} has to beg. {dom} decides when it's been enough, and can decide it hasn't."},
+  {l:3,p:3,t:"{sub} says out loud what they are tonight. {dom} makes them say it again, louder."},
+  {l:3,p:3,t:"{dom} invents a failure and counts it against {sub}. Entirely made up, entirely unfair, and both of you know it."},
+  {l:3,p:3,t:"{sub} thanks {dom} for every word used on them for the rest of the round."},
+  {l:3,p:3,t:"Watch: {sub} looks at themselves — a mirror, a phone screen, anything — while {dom} talks."},
+  {l:3,p:3,t:"Break character completely. {dom} tells {sub} three true things they love about them, in their own voice, holding their face. Then decide together whether to go back in."}
+]},
+
+{id:"peg", n:"Pegging & strap-on",
+ primer:"More lube than you think, then more again, and only ever slower than feels necessary. {sub} sets every pace in this deck; {dom}'s job is patience. Anything that goes near the backside stays there — wash before it goes anywhere else.",
+ cards:[
+  {l:1,p:1,t:"Talk it through first: who's doing what, how you'll say slow down without breaking the mood, and where the lube is."},
+  {l:1,p:3,toys:["lube"],s:300,t:"Outside only, one finger, plenty of lube, five unhurried minutes. Nothing goes in on this card no matter who wants it to."},
+  {l:2,p:3,toys:["lube"],t:"One finger, as slowly as {sub} says. They set the pace by asking; {dom} never goes faster than asked."},
+  {l:2,p:3,toys:["strapon"],t:"{sub} puts the harness on {dom} themselves, adjusts it, and lubes it. {dom} stands still and lets them."},
+  {l:2,p:3,toys:["strapon"],t:"{dom} wears it under their clothes for the next two cards. Neither of you mentions it."},
+  {l:2,p:3,toys:["plug","lube"],t:"The plug goes in and stays in for the next three cards, whatever else is happening. {sub} can end that at any moment."},
+  {l:3,p:3,toys:["strapon","lube"],t:"{sub} on top, in complete control of angle, depth and speed. {dom} keeps their hands on {sub}'s hips and does nothing else."},
+  {l:3,p:3,toys:["strapon","lube"],t:"Face to face, {sub} on their back with knees up and a cushion under the hips. Going in should take a full minute."},
+  {l:3,p:3,toys:["strapon","lube"],t:"From behind, {sub} on hands and knees. {dom} stays completely still — all the movement comes from {sub} pushing back."},
+  {l:3,p:3,toys:["strapon","lube","vibe"],t:"Both at once. {sub} holds the vibrator and keeps it wherever they want it."},
+  {l:3,p:3,toys:["lube"],t:"Stop. More lube, a drink of water, and an honest answer to 'how is this?' Then carry on, or don't."},
+  {l:3,p:3,toys:["plug"],t:"{sub} wears the plug through another card from tonight's deck — a position, a touch card, whatever comes next."},
+  {l:3,p:3,toys:["strapon","lube"],t:"{sub} says when, how fast, and when to stop, out loud, the whole way through. {dom} says nothing at all."}
+]},
+
+{id:"exhib", n:"Exhibitionism & risk",
+ primer:"The thrill in this deck is between the two of you. Nobody else is ever the audience, ever involved, and never sees anything — if someone could actually see you, you're not doing it right. Half the cards work fully dressed in a restaurant.",
+ cards:[
+  {l:1,p:1,t:"{dom} says one filthy sentence into {sub}'s ear in the middle of ordinary conversation. {sub} has to keep the conversation going."},
+  {l:1,p:1,t:"{sub} removes one item of what they're wearing, discreetly, and hands it to {dom} under the table."},
+  {l:1,p:1,t:"{dom} texts {sub} an instruction from across the table. {sub} has to follow it before the next card."},
+  {l:2,p:1,t:"{dom} puts a hand somewhere they shouldn't and leaves it. {sub} carries on talking to whoever they were talking to."},
+  {l:2,p:1,t:"{dom} chooses what {sub} wears — or doesn't — for the rest of the time you're out. {sub} goes and changes."},
+  {l:2,p:2,s:120,t:"Somewhere you could be seen but won't be: kiss for two minutes like you're not in public. Fully clothed, nothing else."},
+  {l:2,p:2,toys:["vibe"],t:"{dom} holds the remote for the rest of the round. {sub} behaves as if absolutely nothing is happening."},
+  {l:2,p:2,t:"Say the rule out loud: if anyone could genuinely see you, you stop instantly. Now go and find the edge of that."},
+  {l:3,p:2,s:600,t:"Back seat, dark garden, balcony at night — ten minutes somewhere with a real thrill and no possible audience."},
+  {l:3,p:2,t:"{sub} follows one instruction from {dom} somewhere they could be caught but won't be. {dom} chooses it now."},
+  {l:3,p:2,toys:["camera"],t:"One photo, wherever you are, that {sub} approves before it's kept. If they don't, it's deleted in front of them."},
+  {l:3,p:3,t:"Curtains open onto a dark garden or an empty view. Lights low. Both of you decide the line before you start."},
+  {l:3,p:3,toys:["camera"],t:"Film thirty seconds of tonight. Watch it together, then decide together whether it survives the night."}
+]},
+
+{id:"sens", n:"Sensation & temperature",
+ primer:"This deck is about contrast — cold then warm, sharp then soft, nothing then something. It works best blindfolded and it always works better slower than you think.",
+ cards:[
+  {l:1,p:2,s:90,t:"{sub} closes their eyes. {dom} touches them with three different things — fabric, nails, breath — and {sub} names each."},
+  {l:1,p:3,toys:["feather"],s:120,t:"Feather only. {sub} isn't allowed to move; every time they do, the two minutes start again."},
+  {l:2,p:3,toys:["ice"],s:90,t:"Ice in {dom}'s mouth, then mouth on {sub}. Alternate cold and warm until the ice is gone."},
+  {l:2,p:3,toys:["blindfold"],s:120,t:"Blindfolded, {sub} guesses what's touching them: silk, nails, teeth, warm metal, breath. Ten seconds each."},
+  {l:2,p:3,t:"Nails down {sub}'s back and thighs — hard enough to leave a mark for an hour, never hard enough to break skin."},
+  {l:2,p:3,s:60,t:"Breath only. Warm and close, then cold and from a distance, over every part of {sub} that's uncovered."},
+  {l:2,p:3,t:"{dom} finds where a bite is good on {sub} and where it isn't, working from the shoulders down. {sub} says which is which."},
+  {l:3,p:3,toys:["oil"],s:180,t:"Warm the oil in your hands first. Three minutes, firm, no destination."},
+  {l:3,p:3,t:"Hair: {dom} takes a whole handful at the base of the scalp, never a few strands, and uses it to move {sub} where they want them."},
+  {l:3,p:3,toys:["clamps"],t:"Clamps on gently, off within ten minutes. Taking them off is the intense part, so {dom} does it slowly with a hand ready."},
+  {l:3,p:3,toys:["ice"],t:"Cold then hot then cold on the same spot, until {sub} can't tell which is which."},
+  {l:3,p:3,toys:["blindfold","ice","feather"],s:180,t:"{dom} cycles three sensations at random for three minutes. {sub} names each one out loud as it happens."},
+  {l:3,p:3,t:"Nothing at all for thirty seconds, then everything at once. Repeat until {sub} asks you to stop doing the first part."}
+]},
+
+{id:"edge", n:"Orgasm control & denial",
+ primer:"{dom} needs to be able to read {sub}, so this deck starts by teaching them how. Denial is only fun while it's wanted — the moment it isn't, it's just an unkindness with extra steps.",
+ cards:[
+  {l:1,p:1,t:"{sub} describes exactly how {dom} can tell they're close — breathing, hands, sounds. {dom} has to be able to repeat it back."},
+  {l:2,p:3,t:"{sub} isn't allowed to finish until three more cards have been played. {dom} decides how close they get in the meantime."},
+  {l:2,p:3,s:60,t:"To the edge once, then stop and hold completely still for a full minute. Nobody speaks."},
+  {l:2,p:3,t:"{sub} counts out loud to ten while {dom} keeps them exactly where they are. If the count breaks, it restarts."},
+  {l:2,p:3,t:"{dom} chooses the pace and never changes it, however much {sub} asks."},
+  {l:3,p:3,t:"Three times to the edge, three times stopped. {sub} counts them out loud. What happens after the third is {dom}'s call alone."},
+  {l:3,p:3,toys:["wand"],t:"{dom} controls the wand and the speed. {sub} has to ask — politely, in a full sentence — for every change."},
+  {l:3,p:3,toys:["vibe"],t:"On for thirty seconds, off for thirty seconds. {dom} keeps that going for as long as they feel like."},
+  {l:3,p:3,t:"{sub} has to ask permission to finish, and {dom} has to say no at least once before saying yes."},
+  {l:3,p:3,t:"{sub} isn't allowed to move at all. Any movement and {dom} stops and waits until they're calm again."},
+  {l:3,p:3,t:"{dom} names one thing {sub} has to do to earn it. {sub} does it, or doesn't get it."},
+  {l:3,p:3,t:"{dom} decides now whether tonight ends in a yes or a no for {sub}, and tells them. Both are allowed."},
+  {l:3,p:3,t:"After all that: {dom} gives up control completely and does exactly what {sub} asks for, for as long as they want it."}
+]},
+
+{id:"role", n:"Roleplay",
+ primer:"The only real rule is that nobody breaks character except with the stop word — and that everyone gets to laugh once at the start and then stop. Agree who each of you is before the first line.",
+ cards:[
+  {l:1,p:1,t:"For the next two cards you have never met. {dom} opens with a line and neither of you may break or laugh."},
+  {l:1,p:1,t:"{dom} chooses a name and a voice for each of you. Use them until someone slips."},
+  {l:2,p:1,t:"One of you is being interviewed for something. The other is decidedly unprofessional about it."},
+  {l:2,p:2,t:"{sub} plays someone who has been very patient for a very long time and is done being patient."},
+  {l:2,p:2,t:"{sub} plays someone who isn't supposed to want this. {dom} finds out otherwise, slowly."},
+  {l:2,p:3,t:"Reenact the first time you slept together — same room if you can, same order, same lines, half the speed."},
+  {l:2,p:3,t:"You are strangers who have twenty minutes and will never see each other again. Behave accordingly."},
+  {l:3,p:3,t:"{sub} names the scenario they've thought about and never said out loud. {dom} runs it without asking questions."},
+  {l:3,p:3,s:600,t:"Ten minutes, in character, no real names, no laughing. Whoever breaks first does what the other says."},
+  {l:3,p:3,t:"{dom} plays someone who has {sub} entirely at their disposal and all the time in the world."},
+  {l:3,p:3,t:"Swap: {sub} directs the scene and {dom} plays whatever part they're given."},
+  {l:3,p:3,t:"Whichever character either of you liked most tonight — bring them back and finish what they started."}
+]},
+
+{id:"worship", n:"Worship & service",
+ primer:"One of you gives and gets nothing back. That's the whole deck. It only works if {dom} can actually receive without reciprocating, which is harder than it sounds.",
+ cards:[
+  {l:1,p:2,t:"{sub} tells {dom} which part of them they most want to spend time on, and why. In detail."},
+  {l:1,p:3,s:120,t:"Two minutes, mouth only, on one part of {dom} that {dom} names. Nothing else moves."},
+  {l:2,p:3,t:"{sub} undresses {dom} completely, folds everything, and thanks them for it."},
+  {l:2,p:3,s:180,t:"Hands and feet: {sub} takes three minutes on {dom}'s hands, then their feet, using mouth and fingers."},
+  {l:2,p:3,toys:["oil"],s:300,t:"Five minutes of service. {sub} oils and massages {dom} wherever they're told and gets nothing back."},
+  {l:2,p:3,t:"{sub} asks {dom} what they can do for them, and does it, without needing to be told twice."},
+  {l:3,p:3,t:"{sub} kneels and does exactly what {dom} names for exactly as long as {dom} wants it."},
+  {l:3,p:3,s:300,t:"Five minutes in which {dom} does absolutely nothing — not a hand, not a movement. {sub} does all of it."},
+  {l:3,p:3,t:"{sub} isn't allowed to be touched at all this round. Not once, however much they want it."},
+  {l:3,p:3,t:"{dom} directs continuously — slower, higher, again, no — and {sub} adjusts instantly every time."},
+  {l:3,p:3,toys:["collar"],t:"Collar on. {sub} stays in whatever posture {dom} puts them in between tasks."},
+  {l:3,p:3,t:"{sub} finishes {dom} however {dom} names, and thanks them afterwards."},
+  {l:3,p:3,t:"{dom} decides whether {sub} gets anything at all tonight. {sub} asks once, properly, and then accepts the answer."}
+]}
+
 ];
+
+/* Stamp each card with its deck id, and build the lists the UI needs. */
+var DECK = {};
+KINK_DECKS.forEach(function(d){
+  DECK[d.id] = d;
+  d.cards.forEach(function(c){ c.f = d.id; });
+});
+var KINKS = KINK_DECKS.map(function(d){ return {id:d.id, n:d.n, count:d.cards.length}; });
 
 /* ---- POSITIONS ----
    common = the mainstream English name, used for the Bad Girls Bible link
@@ -480,7 +613,7 @@ var POSE = [
 var S = {
   names:["",""], heat:3, priv:3, len:20, sw:"pineapple",
   types:{ask:1,touch:1,pose:1,dare:1,kink:0},
-  toys:{}, kinks:{}, domMode:"switch",
+  toys:{}, kinks:{}, domMode:"switch", focus:"", deckSeen:{},
   i:0, turn:0, played:0, passed:0, level:1, usedKink:false,
   used:{}, log:[], cur:null, tick:null
 };
@@ -502,17 +635,36 @@ function checks(box, cb){
 }
 
 /* toy + kink chips */
-function buildChips(host, list, cls){
+function buildChips(host, list){
   host.innerHTML = list.map(function(x){
-    return '<span class="chip' + (cls||"") + '" data-id="' + x.id + '">' + x.n + '</span>';
+    return '<span class="chip" data-id="' + x.id + '">' + x.n +
+           (x.count ? ' <em style="font-style:normal;opacity:.55">' + x.count + '</em>' : '') + '</span>';
   }).join("");
   host.addEventListener("click", function(e){
     var c = e.target.closest(".chip"); if(!c) return;
-    c.classList.toggle("sel"); readSetup(); count();
+    c.classList.toggle("sel"); readSetup(); buildFocus(); count();
   });
 }
 buildChips($("toyChips"), TOYS);
 buildChips($("kinkChips"), KINKS);
+
+/* The focus picker only offers decks that are actually switched on. */
+function buildFocus(){
+  var on = KINK_DECKS.filter(function(d){ return S.kinks[d.id]; });
+  $("focusWrap").classList.toggle("hide", on.length < 2);
+  if(S.focus && !S.kinks[S.focus]) S.focus = "";
+  $("focusChips").innerHTML =
+    '<span class="chip' + (S.focus ? "" : " sel") + '" data-id="">Mix them all</span>' +
+    on.map(function(d){
+      return '<span class="chip' + (S.focus === d.id ? " sel" : "") + '" data-id="' + d.id + '">' +
+             d.n + ' only</span>';
+    }).join("");
+}
+$("focusChips").addEventListener("click", function(e){
+  var c = e.target.closest(".chip"); if(!c) return;
+  S.focus = c.dataset.id;
+  buildFocus(); count();
+});
 
 radio($("locOpts"),  function(){ readSetup(); count(); });
 radio($("heatOpts"), function(){ readSetup(); count(); });
@@ -521,6 +673,7 @@ radio($("domOpts"),  function(){ readSetup(); });
 checks($("typeOpts"), function(){
   readSetup();
   $("kinkPanel").classList.toggle("hide", !S.types.kink);
+  buildFocus();
   count();
 });
 $("toysNone").addEventListener("click", function(){
@@ -548,11 +701,18 @@ function readSetup(){
   [].forEach.call($("typeOpts").querySelectorAll(".opt.sel"), function(o){ S.types[o.dataset.t] = 1; });
   S.toys = {};  [].forEach.call($("toyChips").querySelectorAll(".chip.sel"),  function(c){ S.toys[c.dataset.id] = 1; });
   S.kinks = {}; [].forEach.call($("kinkChips").querySelectorAll(".chip.sel"), function(c){ S.kinks[c.dataset.id] = 1; });
+  if(S.focus && !S.kinks[S.focus]) S.focus = "";
 }
 
 function count(){
-  var n = pool().length;
-  $("deckcount").textContent = n + " cards fit tonight's settings.";
+  var all = pool(), n = all.length;
+  var kink = all.filter(function(c){ return c.k === "kink"; }).length;
+  var decks = Object.keys(S.kinks).filter(function(id){ return !S.focus || S.focus === id; }).length;
+  var msg = n + " cards fit tonight's settings";
+  if(S.types.kink && kink){
+    msg += " — " + kink + " of them across " + decks + (decks === 1 ? " kink deck" : " kink decks");
+  }
+  $("deckcount").textContent = msg + ".";
   $("start").disabled = n === 0;
 }
 
@@ -579,7 +739,13 @@ function pool(){
   if(S.types.touch) add(TOUCH, "touch");
   if(S.types.dare)  add(DARE,  "dare");
   if(S.types.pose)  add(POSE,  "pose");
-  if(S.types.kink)  add(KINK,  "kink");
+  if(S.types.kink){
+    KINK_DECKS.forEach(function(d){
+      if(!S.kinks[d.id]) return;
+      if(S.focus && S.focus !== d.id) return;   // one deck owns the night
+      add(d.cards, "kink");
+    });
+  }
   return out;
 }
 
@@ -648,6 +814,11 @@ function render(){
     h += '<p class="ctext">' + esc(fill(c.t)) + '</p>';
     if(c.toys && c.toys.length){
       h += '<div class="need">' + c.toys.map(function(t){ return "<span>" + esc(TOYNAME[t]) + "</span>"; }).join("") + '</div>';
+    }
+    if(c.k === "kink" && !S.deckSeen[c.f]){
+      S.deckSeen[c.f] = 1;
+      h += '<p class="cnote"><b style="color:var(--gold)">Opening the ' + esc(DECK[c.f].n) +
+           ' deck.</b><br>' + esc(fill(DECK[c.f].primer)) + '</p>';
     }
     if(c.s) h += '<p class="timer" id="clock">' + fmt(c.s) + '</p>';
   }
@@ -724,7 +895,7 @@ function toast(msg){
 $("share").addEventListener("click", function(){
   readSetup();
   var cfg = {n:S.names, h:S.heat, v:S.priv, L:S.len, ty:S.types,
-             to:Object.keys(S.toys), ki:Object.keys(S.kinks), dm:S.domMode};
+             to:Object.keys(S.toys), ki:Object.keys(S.kinks), dm:S.domMode, fo:S.focus};
   var hash = "#s=" + btoa(unescape(encodeURIComponent(JSON.stringify(cfg))));
   var url = location.href.split("#")[0] + hash;
   history.replaceState(null, "", hash);
@@ -760,10 +931,12 @@ function loadShared(){
   }
   setChips($("toyChips"),  cfg.to);
   setChips($("kinkChips"), cfg.ki);
+  S.focus = typeof cfg.fo === "string" ? cfg.fo : "";
   $("domName1").textContent = ($("p1").value||"").trim() || "Player one";
   $("domName2").textContent = ($("p2").value||"").trim() || "Player two";
   readSetup();
   $("kinkPanel").classList.toggle("hide", !S.types.kink);
+  buildFocus();
   toast("Settings loaded — check them together before you start");
 }
 
@@ -772,7 +945,8 @@ $("start").addEventListener("click", function(){
   readSetup();
   if(!pool().length){ toast("Nothing fits those settings — loosen something"); return; }
   S.i = 0; S.turn = Math.random() < .5 ? 0 : 1;
-  S.played = 0; S.passed = 0; S.used = {}; S.log = []; S.cur = null; S.usedKink = false;
+  S.played = 0; S.passed = 0; S.used = {}; S.log = []; S.cur = null;
+  S.usedKink = false; S.deckSeen = {};
   $("swEcho").textContent = S.sw;
   $("setup").classList.add("hide");
   $("end").classList.add("hide");
@@ -790,6 +964,7 @@ $("reset").addEventListener("click", function(){
 
 loadShared();
 readSetup();
+buildFocus();
 count();
 
 })();
