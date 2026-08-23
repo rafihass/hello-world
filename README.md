@@ -21,7 +21,7 @@ browser and play.
 | **Touch** | Specific, timed physical cards with an on-screen countdown |
 | **Position** | 22 classical Kama Sutra positions — Sanskrit name, plain description, difficulty, practical note, and a link out to a full illustrated guide |
 | **Dare** | Playful challenges and small games inside the game |
-| **Kink** | Ten separate decks — power play, restraint, impact and more — off by default, each opted into separately |
+| **Kink** | Ten separate 50-card decks — power play, restraint, impact and more — off by default, each opted into separately |
 
 **Three intensity levels** — Spark, Simmer, Fire. Whatever ceiling you set, the
 game always opens at Spark and escalates: first third gentle, last third at your
@@ -41,63 +41,80 @@ and anything that doesn't fit is removed before the game starts:
 
 ## What you have
 
-Sixteen items — blindfold, cuffs, rope, vibrator, wand, plug, strap-on, lube,
-paddle, collar, clamps, gag, ice, feather, oil, camera. Cards list what they
+Twenty items — blindfold, cuffs, rope, vibrator, wand, plug, strap-on, lube,
+paddle/flogger, crop/cane, collar, clamps, gag, ice, feather, massage oil,
+massage candle, pinwheel, mirror, camera. Cards list what they
 need and are never dealt unless you've said you have it, so nothing lands that
 you can't actually do. Cards that need an item show it on the face of the card.
 
-## Kink — ten decks
+## Kink — ten decks of fifty
 
-Kink is off until you switch it on. Then each kink is a **full deck of its own**,
-not a card or two mixed into the pile — 131 cards in total:
+Kink is off until you switch it on. Then each kink is a **full deck of its
+own** — 50 cards each, 500 in total:
 
-| Deck | Cards |
-|---|---|
-| Domination & submission | 14 |
-| Restraint & bondage | 14 |
-| Impact play / spanking | 13 |
-| Degradation & humiliation | 13 |
-| Pegging & strap-on | 13 |
-| Exhibitionism & risk | 13 |
-| Sensation & temperature | 13 |
-| Orgasm control & denial | 13 |
-| Worship & service | 13 |
-| Roleplay | 12 |
+| Deck | Cards | | Deck | Cards |
+|---|---|---|---|---|
+| Domination & submission | 50 | | Exhibitionism & risk | 50 |
+| Restraint & bondage | 50 | | Sensation & temperature | 50 |
+| Impact play / spanking | 50 | | Orgasm control & denial | 50 |
+| Degradation & humiliation | 50 | | Roleplay | 50 |
+| Pegging & strap-on | 50 | | Worship & service | 50 |
 
-**Every deck has its own arc.** The opening cards negotiate and warm up — agree
-the safe signal, set the word list, outside only, ten slow ones over clothes —
-and the last cards are the deep end. Turn a deck on and you get that whole
-progression, not a random sample of it.
+**Every card is something to do.** No question cards, no "tell your partner
+about…", no conversation prompts — those live in the Ask deck where they belong.
+A kink card is an action, a challenge, a named position or a scene.
+
+**Named cards.** Decks carry named techniques and positions the way the Kama
+Sutra deck does: *Single column tie*, *Box tie*, *Hogtie*, *Frogtie*, *Spread
+eagle* in bondage; *Kneel*, *Present*, *Tower*, *Inspection*, *Prostration* in
+domination; *Spooning*, *Missionary*, *The rider*, *Side saddle*, *The chair* in
+pegging; *The interrogation*, *The pull-over*, *The captive*, *The audition* in
+roleplay.
+
+**Every deck has its own arc.** The opening cards are the light end — over
+clothes, one finger, hold your own wrists, one word said once. The closing cards
+are the deep end, and each deck ends on coming back down: untying slowly,
+soothing every mark, the collar coming off, holding each other while it settles.
 
 **Tonight's shape.** Select two or more decks and a focus picker appears: mix
 them, or give one deck the entire evening. In focus mode the game deals only
-from that deck, so its arc becomes the shape of the night — a bondage night
-starts by practising the release signal and ends by untying you slowly.
+from that deck, so its arc becomes the shape of the night. A deck deals all 50
+of its cards before any of them repeats.
 
-**Deck primers.** The first card drawn from any deck carries that deck's primer:
-the thing you need to know before the deck's first card, in the deck's own
-terms. Rope's says scissors within reach and check the hands. Pegging's says
-more lube than you think and {sub} sets every pace. It appears once per deck per
-game.
+**Deck primers.** Negotiation and safety live in the deck's primer, not in
+cards, so the deck itself is all action. The primer appears once, on the first
+card that deck deals: rope's names EMT shears, the two-tap signal, 6mm minimum
+and the circulation check; impact's names the safe target areas and the ones to
+never touch; degradation's requires the word list and forbids using real
+insecurities; pegging's covers lube, pace and hygiene.
 
 You also choose who leads — swap each turn, or one person all night — and kink
 cards address the two of you by role.
 
 Other design decisions worth knowing about:
 
-- **Nothing is a surprise.** The panel tells you to switch on only what you have
-  already talked about. Every deck's first cards are negotiation cards.
-- **Safety is in the card text, not a disclaimer.** Rope cards say two fingers
-  under every wrap. Gag cards make you agree and test a hand signal first.
-  Impact cards name the areas to avoid and make you warm up. Clamp cards warn
-  that taking them off is the intense part. Degradation cards start with the
-  receiving partner naming the allowed words and the forbidden ones, and the
-  deck contains a card that breaks character entirely.
-- **Public cards never involve anyone else.** Exhibitionism is about the thrill
-  between the two of you — discreet, clothed, nothing a stranger would notice.
-  Nobody becomes an unwilling audience.
+- **Nothing is a surprise.** Turn on only what you've already talked about, and
+  read the primer out loud when it appears.
+- **Safety is in the card text, not a disclaimer.** The box tie card says
+  nothing over the front of the shoulders and ten minutes maximum. The hogtie
+  card routes the weight through the chest rather than the wrists and says never
+  leave them alone. The wax cards say massage candle, tested on your own wrist.
+  The crop cards halve the count and double the pause.
+- **Public cards never involve anyone else.** Exhibitionism is about nearly
+  being seen, by each other — nobody who hasn't agreed to it ever sees anything.
 - **Aftercare is guaranteed.** Play any kink card and the game ends with an
-  aftercare screen. Don't skip it.
+  aftercare screen.
+
+### Where the material comes from
+
+The decks were built against published guidance rather than invented whole —
+rope safety (single and double column ties, 6mm minimum, EMT shears,
+circulation checks, hogtie weight distribution), impact play (implement
+characteristics, warm-up, safe target areas, flogger wrap), orgasm control
+(edging, denial, ruined orgasms, permission), sensation play (temperature,
+pinwheel, wax, sensory deprivation), D/s protocol postures (present, tower,
+inspection, prostration), pegging technique, negotiated degradation, and the
+consent line on exhibitionism. Sources are listed at the bottom of this file.
 
 ## Consent is in the mechanics
 
@@ -155,3 +172,19 @@ Card fields:
 
 Everything runs in the browser. Nothing is stored, sent or logged. Closing the
 tab erases the session.
+
+## Sources
+
+Guidance the kink decks were built against:
+
+- [Kink Checklist](https://kinkchecklist.com) — sensation play, impact, humiliation, voyeurism/exhibitionism
+- [Impact Play Implements](https://bdsmpact.com/activities/impact-implements) — flogger, paddle, crop and cane characteristics
+- [Healthline — Impact Play](https://www.healthline.com/health/healthy-sex/impact-play) — safe zones and aftercare
+- [Le Wand — Rope Bondage for Beginners](https://www.lewandmassager.com/pleasure-guide/rope-bondage/) — column ties, rope diameter, circulation checks
+- [Autostraddle — Shibari 101: Hogtie](https://www.autostraddle.com/shibari-bondage-101-hogtie-404857/) — chest-loaded hogtie
+- [Kneel — Submissive Positions Guide](https://getkneel.com/blog/submissive-positions-guide) — present, tower, inspection, prostration
+- [Consent Culture — Degradation Play](https://consentculture.community/glossary/degradation-play/) and [Exhibitionism](https://consentculture.community/glossary/exhibitionism/) — negotiation registers and the bystander line
+- [Strawberry Patch — Orgasm Control](https://strawberrypatch.love/posts/sexual-wellness/orgasm-control-guide/) — edging, denial, ruined orgasms
+- [Future Method — Pegging for Beginners](https://education.futuremethod.com/what-is-pegging-a-beginners-guide/) — positions, warm-up, lube
+- [Sei Mio — Wartenberg Pinwheel](https://www.sei-mio.com/blogs/news/understanding-the-wartenberg-pinwheel-a-bdsm-classic) — pinwheel use
+- [YourTango — Role Play Ideas](https://www.yourtango.com/2014207426/sex-love-valentines-day-30-role-playing-ideas-couples) and [Kink Weekly](https://www.kinkweekly.com/article-dexx/bdsm-scene-idea-first-bdsm-session-with-a-new-play-partner/) — scenario framing
