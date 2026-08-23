@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kama · A Game for Two</title>
+<style>
+  :root{
+    --bg:#140a12; --bg2:#1e0f1a; --card:#2a1424; --card2:#341a2c;
+    --ink:#f6e9f0; --muted:#c2a3b6; --line:#4a2740;
+    --gold:#e8b96a; --rose:#e2688f; --plum:#a066c9;
+    --ok:#7fd1a5;
+    --r:18px;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{
+    background:
+      radial-gradient(1200px 700px at 15% -10%, #3a1430 0%, transparent 60%),
+      radial-gradient(900px 600px at 110% 110%, #2c1038 0%, transparent 55%),
+      var(--bg);
+    color:var(--ink);
+    font-family:ui-sans-serif,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    min-height:100vh; line-height:1.55;
+    padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  }
+  .wrap{max-width:560px;margin:0 auto;padding:22px 18px 60px}
+  h1{font-family:Georgia,"Times New Roman",serif;font-weight:400;font-size:2.1rem;margin:0;letter-spacing:.02em}
+  h1 span{color:var(--gold)}
+  h2{font-family:Georgia,serif;font-weight:400;font-size:1.25rem;margin:0 0 6px}
+  .sub{color:var(--muted);font-size:.92rem;margin:6px 0 22px}
+  .panel{background:linear-gradient(180deg,var(--card),var(--card2));border:1px solid var(--line);border-radius:var(--r);padding:18px;margin:0 0 16px;box-shadow:0 12px 30px rgba(0,0,0,.35)}
+  label{display:block;font-size:.8rem;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin:0 0 7px}
+  input[type=text]{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:#1b0e18;color:var(--ink);font-size:1rem;font-family:inherit}
+  input[type=text]:focus{outline:none;border-color:var(--rose)}
+  .row{display:flex;gap:12px}
+  .row>*{flex:1;min-width:0}
+  .opts{display:grid;gap:9px;margin-top:4px}
+  .opt{display:flex;align-items:flex-start;gap:11px;padding:12px 13px;border:1px solid var(--line);border-radius:13px;background:#20101c;cursor:pointer;transition:.15s}
+  .opt:hover{border-color:#6b3a5c}
+  .opt.sel{border-color:var(--rose);background:#2d1424;box-shadow:inset 0 0 0 1px rgba(226,104,143,.35)}
+  .opt b{display:block;font-weight:600;font-size:.98rem}
+  .opt small{color:var(--muted);font-size:.83rem;line-height:1.4}
+  .dot{width:16px;height:16px;border-radius:50%;border:2px solid #6b3a5c;flex:0 0 auto;margin-top:4px}
+  .opt.sel .dot{border-color:var(--rose);background:var(--rose);box-shadow:inset 0 0 0 3px var(--card)}
+  .opt.chk .dot{border-radius:5px}
+  button{font-family:inherit}
+  .btn{display:block;width:100%;padding:15px;border-radius:14px;border:0;font-size:1.02rem;font-weight:600;cursor:pointer;transition:.15s;color:#2a0f1e;
+       background:linear-gradient(135deg,var(--gold),var(--rose))}
+  .btn:hover{filter:brightness(1.07)}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+  .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--muted);font-weight:500}
+  .btn.ghost:hover{border-color:var(--rose);color:var(--ink)}
+  .btnrow{display:flex;gap:10px;margin-top:14px}
+  .btnrow .btn{flex:1}
+  .hide{display:none !important}
+
+  /* game */
+  .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;font-size:.82rem;color:var(--muted)}
+  .lvlbar{height:5px;border-radius:99px;background:#301727;overflow:hidden;margin:8px 0 18px}
+  .lvlbar i{display:block;height:100%;background:linear-gradient(90deg,var(--plum),var(--rose),var(--gold));transition:width .5s}
+  .turn{text-align:center;font-family:Georgia,serif;font-size:1.35rem;margin:4px 0 14px}
+  .turn b{color:var(--gold)}
+
+  .gcard{position:relative;border-radius:22px;padding:26px 22px;min-height:290px;display:flex;flex-direction:column;
+    border:1px solid var(--line);background:linear-gradient(165deg,#33172a,#22101d);box-shadow:0 18px 44px rgba(0,0,0,.45)}
+  .gcard.flip{animation:flip .45s ease}
+  @keyframes flip{from{transform:rotateY(-14deg) scale(.95);opacity:0}to{transform:none;opacity:1}}
+  .tag{display:inline-block;align-self:flex-start;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;
+       padding:5px 11px;border-radius:99px;border:1px solid;margin-bottom:16px}
+  .t-ask{color:#8fd3ff;border-color:#2f5f80;background:#132534}
+  .t-touch{color:var(--rose);border-color:#7a3a58;background:#2e1523}
+  .t-pose{color:var(--gold);border-color:#7a5f2c;background:#2e2415}
+  .t-dare{color:#ff9a76;border-color:#7d4630;background:#301a13}
+  .t-wild{color:#c9a2ff;border-color:#5c3d85;background:#241634}
+  .ctitle{font-family:Georgia,serif;font-size:1.5rem;margin:0 0 4px;line-height:1.25}
+  .csans{color:var(--muted);font-style:italic;font-size:.92rem;margin:0 0 12px}
+  .ctext{font-size:1.08rem;margin:0}
+  .cnote{margin-top:auto;padding-top:16px;color:var(--muted);font-size:.85rem;border-top:1px solid rgba(255,255,255,.06)}
+  .pips{display:flex;gap:5px;align-items:center;margin-top:12px;color:var(--muted);font-size:.78rem}
+  .pip{width:9px;height:9px;border-radius:50%;background:#4a2740}
+  .pip.on{background:var(--gold)}
+
+  .timer{text-align:center;font-family:Georgia,serif;font-size:2.6rem;margin:16px 0 0;color:var(--gold);letter-spacing:.04em}
+  .timer.done{color:var(--ok)}
+
+  .foot{margin-top:22px;text-align:center;color:var(--muted);font-size:.78rem;line-height:1.7}
+  .foot a{color:var(--muted)}
+  .safe{margin-top:12px;padding:11px 13px;border:1px dashed var(--line);border-radius:12px;color:var(--muted);font-size:.82rem;text-align:center}
+  .safe b{color:var(--rose)}
+  .stat{display:flex;gap:18px;justify-content:center;margin:18px 0}
+  .stat div{text-align:center}
+  .stat b{display:block;font-family:Georgia,serif;font-size:1.8rem;color:var(--gold);font-weight:400}
+  .stat small{color:var(--muted);font-size:.75rem;text-transform:uppercase;letter-spacing:.1em}
+  ul.log{list-style:none;padding:0;margin:0;max-height:220px;overflow:auto}
+  ul.log li{padding:9px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:.9rem;color:var(--muted)}
+  ul.log li b{color:var(--ink);font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ============ SETUP ============ -->
+<section id="setup">
+  <h1>Kama<span>·</span>Sutra</h1>
+  <p class="sub">A slow game for two people who like each other.</p>
+
+  <div class="panel">
+    <h2>Who's playing?</h2>
+    <div class="row" style="margin-top:12px">
+      <div><label>Player one</label><input type="text" id="p1" placeholder="Name" maxlength="14" autocomplete="off"></div>
+      <div><label>Player two</label><input type="text" id="p2" placeholder="Name" maxlength="14" autocomplete="off"></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>How far does tonight go?</h2>
+    <p class="sub" style="margin:4px 0 14px">The game always starts gentle and builds. This is the ceiling, not the starting point.</p>
+    <div class="opts" id="heatOpts">
+      <div class="opt" data-v="1"><span class="dot"></span><span><b>Spark</b><small>Talking, teasing, hands and mouths staying above the belt. Fully clothed is fine.</small></span></div>
+      <div class="opt" data-v="2"><span class="dot"></span><span><b>Simmer</b><small>Undressing, longer touch, foreplay. Positions appear as suggestions to try later.</small></span></div>
+      <div class="opt sel" data-v="3"><span class="dot"></span><span><b>Fire</b><small>Everything above, plus full Kama Sutra position cards and bolder dares.</small></span></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Card types</h2>
+    <p class="sub" style="margin:4px 0 14px">Turn off anything either of you isn't in the mood for. Both of you should agree here.</p>
+    <div class="opts" id="typeOpts">
+      <div class="opt chk sel" data-t="ask"><span class="dot"></span><span><b>Ask</b><small>Questions that get you talking honestly about wanting each other.</small></span></div>
+      <div class="opt chk sel" data-t="touch"><span class="dot"></span><span><b>Touch</b><small>Timed, specific, unhurried physical cards.</small></span></div>
+      <div class="opt chk sel" data-t="pose"><span class="dot"></span><span><b>Positions</b><small>Classical Kama Sutra positions, described plainly, with a difficulty rating.</small></span></div>
+      <div class="opt chk sel" data-t="dare"><span class="dot"></span><span><b>Dares</b><small>Playful challenges and small games within the game.</small></span></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Length</h2>
+    <div class="opts" id="lenOpts">
+      <div class="opt" data-v="12"><span class="dot"></span><span><b>Short</b><small>12 cards — about twenty minutes.</small></span></div>
+      <div class="opt sel" data-v="20"><span class="dot"></span><span><b>Full evening</b><small>20 cards — the pacing works best here.</small></span></div>
+      <div class="opt" data-v="99"><span class="dot"></span><span><b>Open</b><small>Runs until you stop it.</small></span></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Before you start</h2>
+    <p style="font-size:.93rem;color:var(--muted);margin:8px 0 0">
+      Either of you can say <b style="color:var(--rose)">pass</b> on any card, at any time, for any reason or none —
+      the button is always there and it costs nothing. Pick a word that stops the game entirely,
+      and say it out loud to each other now.
+    </p>
+    <label style="margin-top:16px">Your stop word</label>
+    <input type="text" id="safeword" value="pineapple" maxlength="18" autocomplete="off">
+  </div>
+
+  <button class="btn" id="start">Begin</button>
+  <p class="foot">Everything stays on this device. Nothing is uploaded anywhere.</p>
+</section>
+
+<!-- ============ GAME ============ -->
+<section id="game" class="hide">
+  <div class="top">
+    <span id="progress">Card 1</span>
+    <span id="lvlname">Spark</span>
+  </div>
+  <div class="lvlbar"><i id="lvlfill" style="width:8%"></i></div>
+
+  <p class="turn" id="turn"></p>
+
+  <div class="gcard" id="card"></div>
+
+  <div class="btnrow">
+    <button class="btn ghost" id="pass">Pass</button>
+    <button class="btn" id="next">Done — next card</button>
+  </div>
+  <div class="btnrow">
+    <button class="btn ghost" id="stop" style="font-size:.86rem;padding:11px">End the game</button>
+  </div>
+  <div class="safe">Stop word: <b id="swEcho">pineapple</b> · passing is always free</div>
+</section>
+
+<!-- ============ END ============ -->
+<section id="end" class="hide">
+  <h1>That's the game</h1>
+  <p class="sub">However far you got, that was the right distance.</p>
+  <div class="panel">
+    <div class="stat">
+      <div><b id="sPlayed">0</b><small>Played</small></div>
+      <div><b id="sPassed">0</b><small>Passed</small></div>
+      <div><b id="sLevel">1</b><small>Reached</small></div>
+    </div>
+    <ul class="log" id="log"></ul>
+  </div>
+  <button class="btn" id="again">Play again</button>
+  <div class="btnrow"><button class="btn ghost" id="reset">Change the settings</button></div>
+</section>
+
+</div>
+<script>
+(function(){
+"use strict";
+
+/* ---------------------------------------------------------------
+   CARD CONTENT
+   level 1 = Spark, 2 = Simmer, 3 = Fire
+   {you} = person whose turn it is, {them} = their partner
+---------------------------------------------------------------- */
+
+var ASK = [
+  {l:1,t:"Tell {them} the exact moment you first wanted them. Not the first date — the first want."},
+  {l:1,t:"What's something {them} does without thinking that you find unreasonably attractive?"},
+  {l:1,t:"Describe {them}'s body the way you'd describe it to someone who'd never seen them."},
+  {l:1,t:"When was the last time you thought about {them} during the day and had to stop thinking about it?"},
+  {l:1,t:"What's a compliment you've thought about {them} but never said out loud? Say it now."},
+  {l:1,t:"Which part of your own body do you most want {them} to pay attention to tonight?"},
+  {l:1,t:"Finish this out loud: 'What I want you to do to me is…'"},
+  {l:2,t:"Describe a memory of the two of you in detail — where, what you were wearing, what you did. Take a full minute.",s:60},
+  {l:2,t:"Name one thing you'd like to try that you've never asked for. {them} only has to listen, not agree."},
+  {l:2,t:"Tell {them} what you like being called in bed. Then have them say it."},
+  {l:2,t:"What's your honest answer: slow and drawn out, or urgent? Say why."},
+  {l:2,t:"Ask {them} one question you've been curious about but never asked. They can pass."},
+  {l:2,t:"Describe what you want to happen at the end of tonight. Be specific."},
+  {l:3,t:"Tell {them}, step by step, what you want them to do to you next. They have to do it."},
+  {l:3,t:"Confess one fantasy. {them} decides whether it becomes a card later tonight."},
+  {l:3,t:"Tell {them} the filthiest true thing you've thought about them this week."}
+];
+
+var TOUCH = [
+  {l:1,s:60,t:"Hold {them}'s face and kiss them for a full minute. Nothing else moves."},
+  {l:1,s:90,t:"Undo {them}'s hair or collar and kiss the back of their neck slowly. Hands stay still."},
+  {l:1,s:120,t:"Sit behind {them} and massage their shoulders and scalp. No talking."},
+  {l:1,s:60,t:"Look at {them} in the eyes without speaking or laughing. When the timer ends, kiss them."},
+  {l:1,s:90,t:"Trace {them}'s hands, wrists and forearms with your fingertips. Find out where they shiver."},
+  {l:1,s:60,t:"Kiss {them} anywhere you like — but you're not allowed to use your hands at all."},
+  {l:2,s:120,t:"Remove one item of {them}'s clothing as slowly as you can manage. Kiss whatever it reveals."},
+  {l:2,s:90,t:"Kiss a path from {them}'s mouth to their hip, stopping wherever they react."},
+  {l:2,s:120,t:"Massage {them}'s back with oil or lotion. They tell you louder or softer; you obey."},
+  {l:2,s:90,t:"{them} closes their eyes. Touch them somewhere new every ten seconds — they guess with what."},
+  {l:2,s:120,t:"Use only your mouth on {them} above the waist. Hands behind your back."},
+  {l:2,s:60,t:"Kiss {them} while they keep their hands flat against the wall. They aren't allowed to touch you back."},
+  {l:3,s:180,t:"{them} lies back and does nothing. You have three minutes and full permission. Ask what they want first."},
+  {l:3,s:120,t:"Bring {them} close to the edge — then stop and hold still until they ask you twice."},
+  {l:3,s:120,t:"Blindfold {them} with something soft. Touch them anywhere, but never twice in the same place."},
+  {l:3,s:150,t:"Use only your mouth on {them}, anywhere. They give directions out loud; you follow exactly."},
+  {l:3,s:90,t:"{them} guides your hand wherever they want it and shows you the pace. Keep it exactly."}
+];
+
+/* Kama Sutra positions — classical names, plainly described. d = difficulty 1..4 */
+var POSE = [
+  {l:2,d:1,n:"The Clasping",sn:"Upavishta",t:"Both of you lie on your sides, facing each other, legs interlaced from thigh to ankle. Faces close enough to talk. The oldest position in the text and the easiest to stay in for a long time.",note:"Good for talking while you move."},
+  {l:2,d:1,n:"The Pressing",sn:"Piditaka",t:"From The Clasping, the receiving partner draws both knees up and presses them against their partner's chest, closing the space between you.",note:"Small change, very different feeling."},
+  {l:2,d:2,n:"The Yawning",sn:"Jrimbhitaka",t:"One partner lies on their back and raises both legs, resting the ankles on the other's shoulders. The other kneels close.",note:"Go slowly at the start — depth changes fast here."},
+  {l:2,d:2,n:"The Half-Pressed",sn:"Ardha-piditaka",t:"The receiving partner lies back with one leg stretched flat and the other drawn up toward the chest. Alternate legs when it gets tiring.",note:"Kinder on the hips than it looks."},
+  {l:2,d:2,n:"The Twining",sn:"Veshtitaka",t:"Lying face to face, the receiving partner crosses their legs over their partner's back and locks the ankles together, pulling them in.",note:"They control how close you stay."},
+  {l:2,d:2,n:"The Mare's Position",sn:"Vadavaka",t:"The receiving partner is on top, sitting upright, and holds their partner in place with rhythmic squeezing of the pelvic muscles rather than with movement.",note:"The text treats this one as a learned skill. It rewards practice."},
+  {l:3,d:2,n:"The Rising",sn:"Bhugnaka",t:"Lying on the back, both legs raised straight up and held together, ankles resting against the partner's chest or shoulder.",note:"Ask before adding weight."},
+  {l:3,d:2,n:"The Widely Opened",sn:"Vyayata",t:"On the back, head tilted back and hips lifted, knees wide apart. The partner kneels between and supports the small of their back with both hands.",note:"A cushion under the hips makes this last longer."},
+  {l:3,d:2,n:"The Splitting of a Bamboo",sn:"Venudaritaka",t:"On the back, one leg on the partner's shoulder and the other stretched out flat. Every so often, swap which leg is up — that alternation is the whole point of the pose.",note:"Swap on a count you both agree on."},
+  {l:3,d:2,n:"The Lotus-Like",sn:"Padmasana",t:"The receiving partner crosses their legs into a lotus or half-lotus while lying back. Their partner kneels close and holds the crossed knees.",note:"Half-lotus is fine. Nobody is being graded."},
+  {l:3,d:3,n:"The Fixing of a Nail",sn:"Kulisha",t:"On the back with one heel resting on the partner's forehead or shoulder and the other leg stretched out. Named for the heel's placement.",note:"Only if that leg opens comfortably."},
+  {l:3,d:3,n:"The Crab",sn:"Karkata",t:"On the back, both knees drawn all the way up to the stomach and held there by the partner, who leans over from the front.",note:"Very close, very little room to move — that's the design."},
+  {l:3,d:3,n:"The Packed Position",sn:"Sampatuka",t:"On the back, both thighs raised and held tightly together, calves crossed. The partner kneels astride the crossed legs.",note:"Tightest of the lying positions."},
+  {l:3,d:3,n:"The Turning Position",sn:"Parivartita",t:"Starting from any face-to-face pose, the partner on top turns slowly through a full circle without separating, while the one below stays still and holds their hips.",note:"Go in inches. Laughing is expected."},
+  {l:3,d:2,n:"The Supported Congress",sn:"Sthita",t:"Both standing, leaning against a wall or a door for support, holding each other by the waist and shoulders.",note:"Height difference decides everything. Try a step or a stair."},
+  {l:3,d:3,n:"The Suspended Congress",sn:"Avalambitaka",t:"One partner leans back against a wall; the other faces them, is lifted, and braces their feet against the wall on either side, arms around the neck.",note:"Test the lift first with clothes on. Stop the moment either of you is straining."},
+  {l:3,d:2,n:"The Congress of a Cow",sn:"Dhenuka",t:"The receiving partner kneels on hands and knees, or bends forward over the edge of the bed; their partner is behind them, hands on their hips.",note:"Reaching around the front is part of the classical description."},
+  {l:3,d:2,n:"The Swing",sn:"Preankholita",t:"One partner sits with legs extended and leans back on their hands. The other sits astride, facing them, and rocks — a slow swinging motion rather than thrusting.",note:"Set the rhythm together and don't rush it."},
+  {l:3,d:1,n:"Seated Embrace",sn:"Samputa",t:"One sits cross-legged; the other sits astride their lap, facing them, legs wrapped around their back. Foreheads touching, arms around each other.",note:"Barely moves. Ends up being most couples' favourite card."},
+  {l:3,d:3,n:"The Elephant Posture",sn:"Aibha",t:"The receiving partner lies face down, hips slightly raised on a cushion, legs together. Their partner lies along their back, taking weight on their elbows.",note:"Full-length contact — say if the weight is too much."},
+  {l:3,d:2,n:"The Pair of Tongs",sn:"Sandansha",t:"The receiving partner is on top and upright. Once joined, both of you stay completely still and hold with internal muscles alone for as long as you can.",note:"A stillness contest. Whoever moves first loses."},
+  {l:3,d:4,n:"The Top",sn:"Bhramaraka",t:"Astride and facing away, the partner on top turns all the way around to face forward without separating, using their hands on the thighs for balance.",note:"Difficult, and the text says so too. Attempt it for the fun of failing."}
+];
+
+var DARE = [
+  {l:1,t:"Put on the song you'd choose for tonight. It plays for the rest of this round and neither of you may comment on it."},
+  {l:1,t:"Swap one item of clothing with {them} and wear it until your next turn."},
+  {l:1,t:"Feed {them} something — a drink, fruit, chocolate, anything within reach — using only your hands."},
+  {l:1,t:"Write three words on {them}'s back with your finger. They have to guess the phrase."},
+  {l:1,t:"Text {them} what you're thinking right now instead of saying it. They read it in front of you."},
+  {l:2,t:"You may give {them} one instruction and they must follow it. Anything they'd say yes to."},
+  {l:2,t:"Take {them}'s hands and place them exactly where you want them. Leave them there for two more cards.",s:0},
+  {l:2,t:"For the next two cards, {them} is not allowed to speak — only to nod or shake their head."},
+  {l:2,t:"Choose: give up all use of your hands for the next two cards, or let {them} choose the next card for you."},
+  {l:3,t:"Skip the deck. Do the thing you've both been thinking about since card three."},
+  {l:3,t:"Redraw a card you passed on earlier and try it now — or say clearly why it stays a no."},
+  {l:3,t:"{them} picks any position card from tonight and you hold it, still, for one full minute before moving.",s:60},
+  {l:3,t:"Hand your phone to {them}. They set a timer for any length between one and five minutes. Whatever's happening when it rings, stops."}
+];
+
+/* --------------------------- STATE --------------------------- */
+var S = {
+  names:["","" ], maxHeat:3, types:{ask:1,touch:1,pose:1,dare:1}, len:20, sw:"pineapple",
+  i:0, turn:0, played:0, passed:0, level:1, used:{}, log:[], cur:null, tick:null
+};
+
+var $ = function(id){ return document.getElementById(id); };
+
+/* ------------------------- SETUP UI -------------------------- */
+function radio(box, cb){
+  box.addEventListener("click", function(e){
+    var o = e.target.closest(".opt"); if(!o) return;
+    [].forEach.call(box.querySelectorAll(".opt"), function(x){ x.classList.remove("sel"); });
+    o.classList.add("sel"); cb && cb(o);
+  });
+}
+function checks(box, cb){
+  box.addEventListener("click", function(e){
+    var o = e.target.closest(".opt"); if(!o) return;
+    o.classList.toggle("sel"); cb && cb();
+  });
+}
+radio($("heatOpts"));
+radio($("lenOpts"));
+checks($("typeOpts"), function(){
+  var any = $("typeOpts").querySelectorAll(".opt.sel").length > 0;
+  $("start").disabled = !any;
+});
+
+/* --------------------------- DECK ---------------------------- */
+function pool(){
+  var out = [];
+  if(S.types.ask)   ASK.forEach(function(c){ out.push({k:"ask",   l:c.l, s:c.s||0, t:c.t}); });
+  if(S.types.touch) TOUCH.forEach(function(c){ out.push({k:"touch", l:c.l, s:c.s||0, t:c.t}); });
+  if(S.types.dare)  DARE.forEach(function(c){ out.push({k:"dare",  l:c.l, s:c.s||0, t:c.t}); });
+  if(S.types.pose)  POSE.forEach(function(c){ out.push({k:"pose",  l:c.l, s:0, n:c.n, sn:c.sn, t:c.t, d:c.d, note:c.note}); });
+  out = out.filter(function(c){ return c.l <= S.maxHeat; });
+  // e.g. Positions only + Spark ceiling leaves nothing — fall back to every card in range.
+  if(!out.length){
+    ASK.concat(TOUCH, DARE).forEach(function(c){
+      if(c.l <= S.maxHeat) out.push({k:(ASK.indexOf(c)>-1?"ask":TOUCH.indexOf(c)>-1?"touch":"dare"), l:c.l, s:c.s||0, t:c.t});
+    });
+  }
+  return out;
+}
+
+/* Level ramps across the session: first third gentle, last third at the ceiling. */
+function levelFor(i){
+  var span = (S.len === 99) ? 18 : S.len;
+  var p = i / Math.max(span - 1, 1);
+  var l = p < .33 ? 1 : (p < .66 ? 2 : 3);
+  return Math.min(l, S.maxHeat);
+}
+
+function draw(){
+  var lvl = S.level, all = pool();
+  var fresh = all.filter(function(c){ return !S.used[key(c)]; });
+  if(!fresh.length){ S.used = {}; fresh = all; }
+
+  // Prefer the current level; fall back downward, then upward.
+  var tiers = [
+    fresh.filter(function(c){ return c.l === lvl; }),
+    fresh.filter(function(c){ return c.l === lvl - 1; }),
+    fresh.filter(function(c){ return c.l === lvl + 1; }),
+    fresh
+  ];
+  var pick = null;
+  for(var i=0;i<tiers.length;i++){
+    var t = tiers[i];
+    // avoid two of the same kind in a row when there's a choice
+    if(S.cur){ var v = t.filter(function(c){ return c.k !== S.cur.k; }); if(v.length) t = v; }
+    if(t.length){ pick = t[Math.floor(Math.random()*t.length)]; break; }
+  }
+  S.used[key(pick)] = 1;
+  return pick;
+}
+function key(c){ return c.k + "|" + (c.n || c.t).slice(0,40); }
+
+/* --------------------------- RENDER -------------------------- */
+var LABEL = {ask:"Ask", touch:"Touch", pose:"Position", dare:"Dare"};
+var LVLNAME = ["","Spark","Simmer","Fire"];
+
+function fill(str){
+  return str.replace(/\{you\}/g, S.names[S.turn]).replace(/\{them\}/g, S.names[1 - S.turn]);
+}
+
+function render(){
+  var c = S.cur, el = $("card"), h = "";
+  h += '<span class="tag t-' + c.k + '">' + LABEL[c.k] + '</span>';
+
+  if(c.k === "pose"){
+    h += '<h3 class="ctitle">' + c.n + '</h3>';
+    h += '<p class="csans">' + c.sn + '</p>';
+    h += '<p class="ctext">' + c.t + '</p>';
+    var pips = "";
+    for(var i=1;i<=4;i++) pips += '<span class="pip' + (i <= c.d ? " on" : "") + '"></span>';
+    h += '<div class="pips">' + pips + '<span style="margin-left:6px">difficulty</span></div>';
+    h += '<p class="cnote">' + c.note + '</p>';
+  } else {
+    h += '<p class="ctext">' + fill(c.t) + '</p>';
+    if(c.s) h += '<p class="timer" id="clock">' + fmt(c.s) + '</p>';
+  }
+  el.innerHTML = h;
+  el.classList.remove("flip"); void el.offsetWidth; el.classList.add("flip");
+
+  $("turn").innerHTML = (c.k === "pose")
+    ? "For <b>both</b> of you"
+    : "<b>" + S.names[S.turn] + "</b>, this one's yours";
+
+  var n = S.i + 1;
+  $("progress").textContent = (S.len === 99) ? ("Card " + n) : ("Card " + n + " of " + S.len);
+  $("lvlname").textContent = LVLNAME[S.level];
+  $("lvlfill").style.width = Math.min(100, (n / (S.len === 99 ? 18 : S.len)) * 100) + "%";
+
+  clearInterval(S.tick);
+  if(c.s) countdown(c.s);
+}
+
+function fmt(s){ return Math.floor(s/60) + ":" + ("0" + (s%60)).slice(-2); }
+
+function countdown(sec){
+  var left = sec, el = $("clock");
+  S.tick = setInterval(function(){
+    left--;
+    if(!el) { clearInterval(S.tick); return; }
+    el.textContent = left > 0 ? fmt(left) : "time";
+    if(left <= 0){ el.classList.add("done"); clearInterval(S.tick); }
+  }, 1000);
+}
+
+/* --------------------------- FLOW ---------------------------- */
+function nextCard(){
+  S.level = levelFor(S.i);
+  S.cur = draw();
+  render();
+}
+
+function advance(passed){
+  clearInterval(S.tick);
+  if(S.cur){
+    if(passed) S.passed++; else S.played++;
+    S.log.push({p:passed, k:S.cur.k, name:S.cur.n || fill(S.cur.t)});
+  }
+  S.i++;
+  if(S.len !== 99 && S.i >= S.len){ finish(); return; }
+  if(S.cur && S.cur.k !== "pose") S.turn = 1 - S.turn;
+  nextCard();
+}
+
+function finish(){
+  clearInterval(S.tick);
+  $("game").classList.add("hide");
+  $("end").classList.remove("hide");
+  $("sPlayed").textContent = S.played;
+  $("sPassed").textContent = S.passed;
+  $("sLevel").textContent = LVLNAME[S.level];
+  $("log").innerHTML = S.log.slice(-12).reverse().map(function(e){
+    return "<li>" + (e.p ? "· passed — " : "<b>✓</b> ") + "<span>" + esc(e.name).slice(0,90) + "</span></li>";
+  }).join("");
+  window.scrollTo(0,0);
+}
+function esc(s){ return String(s).replace(/[<>&]/g, function(m){ return {"<":"&lt;",">":"&gt;","&":"&amp;"}[m]; }); }
+
+/* ------------------------- HANDLERS -------------------------- */
+$("start").addEventListener("click", function(){
+  S.names[0] = ($("p1").value || "").trim() || "Player one";
+  S.names[1] = ($("p2").value || "").trim() || "Player two";
+  S.maxHeat  = +$("heatOpts").querySelector(".opt.sel").dataset.v;
+  S.len      = +$("lenOpts").querySelector(".opt.sel").dataset.v;
+  S.sw       = ($("safeword").value || "").trim() || "stop";
+  S.types = {ask:0,touch:0,pose:0,dare:0};
+  [].forEach.call($("typeOpts").querySelectorAll(".opt.sel"), function(o){ S.types[o.dataset.t] = 1; });
+
+  S.i = 0; S.turn = Math.random() < .5 ? 0 : 1; S.played = 0; S.passed = 0; S.used = {}; S.log = []; S.cur = null;
+  $("swEcho").textContent = S.sw;
+  $("setup").classList.add("hide");
+  $("end").classList.add("hide");
+  $("game").classList.remove("hide");
+  window.scrollTo(0,0);
+  nextCard();
+});
+
+$("next").addEventListener("click", function(){ advance(false); });
+$("pass").addEventListener("click",  function(){ advance(true);  });
+$("stop").addEventListener("click",  function(){ finish(); });
+$("again").addEventListener("click", function(){ $("start").click(); });
+$("reset").addEventListener("click", function(){
+  $("end").classList.add("hide"); $("setup").classList.remove("hide"); window.scrollTo(0,0);
+});
+
+})();
+</script>
+</body>
+</html>
